@@ -26,11 +26,19 @@ class VirtualIncentives
   end
 
   module Methods
-    def account
-      get ''
+
+    def place_order(options = {})
+      post 'order', options
     end
 
-    # API methods
+    def order(id)
+      raise 'Order Id needed.' unless id
+      get "order/#{id}"
+    end
+
+    def orders(options = {})
+      post 'order/list', options
+    end
   end
 
   extend Methods

@@ -5,7 +5,7 @@ class VirtualIncentives
   module Base
     def self.extended(klass)
       klass.send :cattr_accessor, :endpoint, :auth, :auths
-      klass.endpoint = 'https://testbedapp.virtualincentives.com/api/v4/'
+      klass.endpoint = 'https://rest.virtualincentives.com/v3/json/'
     end
 
     def self.included(klass)
@@ -45,8 +45,8 @@ class VirtualIncentives
 
     def default_resource_options
       {
+        **get_auth,
         headers: {
-          "Authorization" => "Bearer #{get_auth}",
           "Accept"        => "application/json",
           "Content-Type"  => "json"
         }
@@ -57,7 +57,25 @@ class VirtualIncentives
       RestClient::Resource.new inherited_endpoint, default_resource_options.deep_merge(options)
     end
 
-    def response(method, resource, options = {})
+    def handle_response(method, resource, options = {})
+      res = response(method, resource, options)
+      if error = find_error(res)
+        raise "#{error.code}: #{error.field} = #{error.message}"
+      end
+      res 
+    end
+
+    def find_error(object, found=nil)
+      key = "errors"
+      if object.respond_to?(:key?) && object.key?(key)
+        return object[key]
+      elsif object.is_a? Enumerable
+        object.find { |*a| found = deep_find(key, a.last) }
+        return JSON.parse found
+      end
+    end
+
+    def response(method, resource, options)
       if body = options.delete(:body)
         JSON.parse resource.send(method, JSON.generate(body), options)
       else
