@@ -12,6 +12,7 @@ describe VirtualIncentives do
   let(:programid) {
     'testid'
   }
+
   after do
     VirtualIncentives.auth  = nil
     VirtualIncentives.auths = nil
