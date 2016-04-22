@@ -9,7 +9,9 @@ describe VirtualIncentives do
       password: 'test'
     }
   }
-
+  let(:programid) {
+    'testid'
+  }
   after do
     VirtualIncentives.auth  = nil
     VirtualIncentives.auths = nil
@@ -17,7 +19,7 @@ describe VirtualIncentives do
 
   it 'errors without auth' do
     expect{
-      VirtualIncentives.orders
+      VirtualIncentives.orders programid
     }.to raise_error 'you must set an auth token at application boot'
   end
 
@@ -25,7 +27,7 @@ describe VirtualIncentives do
     VirtualIncentives.auths = {default: auth}
 
     expect{
-      VirtualIncentives.orders
+      VirtualIncentives.orders programid
     }.to raise_error 'you must init a new API instance with the auth you want to use'
   end
 
@@ -33,7 +35,7 @@ describe VirtualIncentives do
     VirtualIncentives.auths = {default: auth}
 
     expect{
-      VirtualIncentives.new(auth: :foo).orders
+      VirtualIncentives.new(auth: :foo).orders programid
     }.to raise_error KeyError, 'key not found: :foo'
   end
 
@@ -42,11 +44,11 @@ describe VirtualIncentives do
     VirtualIncentives.auths = {default: auth}
 
     expect{
-      VirtualIncentives.orders
+      VirtualIncentives.orders programid
     }.to raise_error "auth and auths can't both be set"
 
     expect{
-      VirtualIncentives.new(auth: :default).orders
+      VirtualIncentives.new(auth: :default).orders programid
     }.to raise_error "auth and auths can't both be set"
   end
 
@@ -122,7 +124,7 @@ describe VirtualIncentives do
         it 'lists all orders' do
           stub_request(:post, "https://test:test@rest.virtualincentives.com/v3/json/order/list").
             to_return(status: 200, body: '{"orders":{"order":[{"programid":"26490","number":"24686669","clientid":"56258125","status":"completed"},{"programid":"26490","number":"24686670","clientid":"56258126","status":"completed"},{"programid":"26490","number":"24686671","clientid":"56258127","status":"completed"},{"programid":"26490","number":"24686672","clientid":"56258128","status":"pending"}]}}')
-          res = api.orders({orders: {programid: '26490'}})
+          res = api.orders('26490')
           expect(res['orders']['order'][0]['number']).to eql '24686669'
           expect(res['orders']['order'][1]['number']).to eql '24686670'
         end

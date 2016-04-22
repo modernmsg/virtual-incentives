@@ -28,7 +28,8 @@ class VirtualIncentives
   module Methods
 
     def place_order(options = {})
-      post 'order', options
+      options = {'orders' => options}
+      post 'order', body: options
     end
 
     def order(id)
@@ -36,8 +37,10 @@ class VirtualIncentives
       get "order/#{id}"
     end
 
-    def orders(options = {})
-      post 'order/list', options
+    def orders(programid)
+      rails 'Program ID needed' unless programid
+      options = {'orders' => {'programid' =>  programid}}
+      post 'order/list', body: options
     end
   end
 
