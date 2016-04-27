@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'virtual_incentives/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'virtual-incentives'
+  spec.name          = 'virtual_incentives'
   spec.version       = VirtualIncentives::VERSION
   spec.authors       = ['Nathan Zorn']
   spec.email         = ['nathan@modernmsg.com']

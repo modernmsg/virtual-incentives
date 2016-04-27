@@ -7,7 +7,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'virtual-incentives'
+gem 'virtual_incentives'
 ```
 
 And then execute:
@@ -19,7 +19,7 @@ bundle
 Or install it yourself as:
 
 ```
-gem install virtual-incentives
+gem install virtual_incentives
 ```
 
 ## Usage
