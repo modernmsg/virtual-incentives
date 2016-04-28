@@ -34,7 +34,7 @@ class VirtualIncentives
 
     def order(id)
       raise 'Order Id needed.' unless id
-      get "order/#{id}"
+      get "orders/#{id}"
     end
 
     def orders(options = {})
