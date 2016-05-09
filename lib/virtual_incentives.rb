@@ -29,18 +29,64 @@ class VirtualIncentives
 
     def place_order(options = {})
       options = {'orders' => options}
-      post 'order', body: options
+      post 'orders', body: options
     end
 
     def order(id)
       raise 'Order Id needed.' unless id
-      get "order/#{id}"
+      get "orders/#{id}"
     end
 
-    def orders(programid)
-      rails 'Program ID needed' unless programid
-      options = {'orders' => {'programid' =>  programid}}
-      post 'order/list', body: options
+    def orders(options = {})
+      get 'orders', options
+    end
+
+    def product(sku)
+      raise 'SKU is needed.' unless sku
+      get "products/#{sku}"
+    end
+
+    def product_faceplate(sku)
+      raise 'SKU is needed.' unless sku
+      get "products/#{sku}/faceplate"
+    end
+
+    def product_marketing(sku)
+      raise 'SKU is needed.' unless sku
+      get "products/#{sku}/marketing"
+    end
+
+    def product_terms(sku)
+      raise 'SKU is needed.' unless sku
+      get "products/#{sku}/terms"
+    end
+
+    def products(options = {})
+      get 'products', options
+    end
+
+    def balances
+      get 'balances'
+    end
+
+    def program_balances
+      get 'balances/programs'
+    end
+
+    def program_products(id)
+      raise 'Need Program Id' unless id
+      get "programs/#{id}/products"
+    end
+
+    def program_balance(id)
+      raise 'Need Program Id' unless id
+      get "balances/programs/#{id}"
+    end
+
+    def program_product(id, sku)
+      raise 'Need Program Id' unless id
+      raise 'Need SKU' unless sku
+      get "programs/#{id}/products/#{sku}"
     end
   end
 
