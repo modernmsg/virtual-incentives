@@ -5,7 +5,7 @@ class VirtualIncentives
   module Base
     def self.extended(klass)
       klass.send :cattr_accessor, :endpoint, :auth, :auths
-      klass.endpoint = 'https://rest.virtualincentives.com/v3/json/'
+      klass.endpoint = 'https://rest.virtualincentives.com/v4/json/'
     end
 
     def self.included(klass)
