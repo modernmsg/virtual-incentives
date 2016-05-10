@@ -28,7 +28,6 @@ class VirtualIncentives
   module Methods
 
     def place_order(options = {})
-      options = {'orders' => options}
       post 'orders', body: options
     end
 
