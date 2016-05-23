@@ -1,7 +1,5 @@
 # A Ruby gem for [Virtual Incentives](http://www.virtualincentives.com/api-integrations/) API
 
-[![Travis CI](http://img.shields.io/travis/modernmsg/virtual-incentives/master.svg)](https://travis-ci.org/modernmsg/virtual-incentives)
-
 ## Installation
 
 Add this line to your application's Gemfile:
