@@ -1,6 +1,9 @@
 require 'virtual_incentives/version'
 require 'virtual_incentives/base'
 
+class OrderError < RuntimeError
+end
+
 class VirtualIncentives
   extend Base
   include Base
@@ -28,7 +31,9 @@ class VirtualIncentives
   module Methods
 
     def place_order(options = {})
-      post 'orders', body: options
+      order = post 'orders', body: options
+      raise OrderError, order.to_s if order.dig('order', 'errors')
+      order
     end
 
     def order(id)
