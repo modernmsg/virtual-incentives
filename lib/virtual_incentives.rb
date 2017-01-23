@@ -32,7 +32,10 @@ class VirtualIncentives
 
     def place_order(options = {})
       order = post 'orders', body: options
-      raise OrderError, order.to_s if order.dig('order', 'errors')
+
+      errors = *order.dig('order', 'errors'), *order.dig('order', 'accounts', 0, 'errors')
+      raise OrderError, errors.to_s if errors.any?
+
       order
     end
 
