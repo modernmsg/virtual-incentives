@@ -1,12 +1,12 @@
 require 'virtual_incentives/version'
 require 'virtual_incentives/base'
 
-class OrderError < RuntimeError
-end
-
 class VirtualIncentives
   extend Base
   include Base
+
+  class OrderError < RuntimeError
+  end
 
   # Class-level methods only work if you have a single API account. This lets
   # you instantiate the API for a given account, if you have multiple.
