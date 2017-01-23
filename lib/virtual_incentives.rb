@@ -1,12 +1,12 @@
 require 'virtual_incentives/version'
 require 'virtual_incentives/base'
 
-class OrderError < RuntimeError
-end
-
 class VirtualIncentives
   extend Base
   include Base
+
+  class OrderError < RuntimeError
+  end
 
   # Class-level methods only work if you have a single API account. This lets
   # you instantiate the API for a given account, if you have multiple.
@@ -32,7 +32,10 @@ class VirtualIncentives
 
     def place_order(options = {})
       order = post 'orders', body: options
-      raise OrderError, order.to_s if order.dig('order', 'errors')
+
+      errors = *order.dig('order', 'errors'), *order.dig('order', 'accounts', 0, 'errors')
+      raise OrderError, errors.to_s if errors.any?
+
       order
     end
 
