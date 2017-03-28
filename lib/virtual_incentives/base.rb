@@ -75,15 +75,24 @@ class VirtualIncentives
       end
     end
 
-    def response(method, resource, options)
-      if body = options.delete(:body)
-        JSON.parse resource.send(method, JSON.generate(body), options)
-      else
-        JSON.parse resource.send(method, options)
-      end
-    rescue => e
-      if e.respond_to?(:response)
-        JSON.parse(e.response)
+    def response(method, resource, options = {})
+      json =
+        if (body = options.delete(:body))
+          resource.send(method, JSON.generate(body), options)
+        else
+          resource.send(method, options)
+        end
+
+      JSON.parse(json).merge('status' => 200)
+    rescue RestClient::ExceptionWithResponse => e
+      case e.http_code
+      when 400..499
+        JSON.parse(e.response).merge('status' => e.http_code)
+      when 500..599
+        {
+          'status' => e.http_code,
+          'error' => { 'message' => e.response }
+        }
       else
         raise
       end
